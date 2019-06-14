@@ -5,16 +5,35 @@
 // since it's an iterator we can't really do the recursive method
 // but should do that to warm up
 
-function inorderTraverse (root, visit = () => {}) {
+function inorderTraverseRec (root, visit = () => {}) {
   if (!root) return
   inorderTraverse(root.left, visit)
   visit(root)
   inorderTraverse(root.right, visit)
 }
 
+function* inorder (root) {
+  const stack = []
+  let current = root
+
+  while (stack.length || current) {
+    // as long as i can go left, go left
+    while (current) {
+      stack.push(current)
+      current = current.left
+    }
+    current = stack.pop()
+    yield current
+    current = current.right
+  }
+}
+
 /***** testing *****/
 const root = generateTree()
-inorderTraverse(root, (n) => console.log(n.val)) // should print 4,2,5,1,3
+
+for (let node of inorder(root)) {
+  console.log(node.val)
+}
 
 /***** testing helpers ****/
 /*
