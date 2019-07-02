@@ -1,4 +1,4 @@
-package btree;
+package algos;
 
 import java.io.IOException;
 import java.util.ArrayList;

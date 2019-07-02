@@ -1,4 +1,4 @@
-package btree;
+package algos;
 
 import static org.junit.Assert.assertEquals;
 

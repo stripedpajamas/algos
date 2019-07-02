@@ -1,4 +1,4 @@
-package btree;
+package algos;
 
 public class TreeNode<V extends Comparable<V>> {
 	final V val;
