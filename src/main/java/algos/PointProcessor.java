@@ -1,6 +1,9 @@
 package algos;
 
 import java.util.Arrays;
+import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.stream.IntStream;
 
 public class PointProcessor {
 	public class PointDistance {
@@ -17,7 +20,23 @@ public class PointProcessor {
 	 * https://leetcode.com/problems/k-closest-points-to-origin/
 	 */
 	public int[][] kClosest(final int[][] points, final int k) {
-		return mapSortLimit(points, k);
+		if (k >= points.length) {
+			throw new IllegalArgumentException("k must be smaller than points length");
+		}
+		// return mapSortLimit(points, k);
+		return selectFromHeap(points, k);
+	}
+
+	public int[][] selectFromHeap(final int[][] points, final int k) {
+		final Queue<PointDistance> minHeap = new PriorityQueue<>(k, this::byDistance);
+		Arrays.stream(points)
+			.map(p -> new PointDistance(p, calculateEuclidianDistanceFromOrigin(p)))
+			.forEach(pd -> { minHeap.add(pd); });
+		
+		return IntStream.range(0, k)
+			.boxed()
+			.map(i -> minHeap.poll().point)
+			.toArray(int[][]::new);
 	}
 
 	/**
@@ -29,8 +48,12 @@ public class PointProcessor {
 	 * @return k closest points to the origin
 	 */
 	public int[][] mapSortLimit(final int[][] points, final int k) {
-		return Arrays.stream(points).map(p -> new PointDistance(p, calculateEuclidianDistanceFromOrigin(p)))
-				.sorted(this::byDistance).limit(k).map(pd -> pd.point).toArray(int[][]::new);
+		return Arrays.stream(points)
+			.map(p -> new PointDistance(p, calculateEuclidianDistanceFromOrigin(p)))
+			.sorted(this::byDistance)
+			.limit(k)
+			.map(pd -> pd.point)
+			.toArray(int[][]::new);
 	}
 
 	/**
