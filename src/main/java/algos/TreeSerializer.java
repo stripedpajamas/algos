@@ -30,9 +30,9 @@ public class TreeSerializer<T extends Comparable<T>> {
         while (!queue.isEmpty()) {
             final TreeNode<T> current = queue.poll();
             if (current != null) {
-                output.add(current.val);
-                queue.add(current.left);
-                queue.add(current.right);
+                output.add(current.getVal());
+                queue.add(current.getLeft());
+                queue.add(current.getRight());
             } else {
                 output.add(null);
             }
@@ -60,16 +60,16 @@ public class TreeSerializer<T extends Comparable<T>> {
             if (++currentIdx < valuesList.size()) {
                 final T leftVal = valuesList.get(currentIdx);
                 if (leftVal != null) {
-                    currentParent.left = new TreeNode<>(leftVal);
-                    parentQueue.add(currentParent.left);
+                    currentParent.setLeft(new TreeNode<>(leftVal));
+                    parentQueue.add(currentParent.getLeft());
                 }
             }
 
             if (++currentIdx < valuesList.size()) {
                 final T rightVal = valuesList.get(currentIdx);
                 if (rightVal != null) {
-                    currentParent.right = new TreeNode<>(rightVal);
-                    parentQueue.add(currentParent.right);
+                    currentParent.setRight(new TreeNode<>(rightVal));
+                    parentQueue.add(currentParent.getRight());
                 }
             }
         }

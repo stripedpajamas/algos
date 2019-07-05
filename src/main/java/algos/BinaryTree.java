@@ -24,19 +24,19 @@ public class BinaryTree<T extends Comparable<T>> {
 			return;
 		}
 
-		if (val.compareTo(root.val) < 0) {
+		if (val.compareTo(root.getVal()) < 0) {
 			// val belongs to the left of root
-			if (root.left == null) {
-				root.left = new TreeNode<>(val);
+			if (root.getLeft() == null) {
+				root.setLeft(new TreeNode<>(val));
 			} else {
-				insert(root.left, val);
+				insert(root.getLeft(), val);
 			}
-		} else if (val.compareTo(root.val) > 0) {
+		} else if (val.compareTo(root.getVal()) > 0) {
 			// val belongs to the right of root
-			if (root.right == null) {
-				root.right = new TreeNode<>(val);
+			if (root.getRight() == null) {
+				root.setRight(new TreeNode<>(val));
 			} else {
-				insert(root.right, val);
+				insert(root.getRight(), val);
 			}
 		}
 	}
@@ -55,9 +55,9 @@ public class BinaryTree<T extends Comparable<T>> {
 		if (root == null) {
 			return;
 		}
-		traverseInOrder(root.left, visit);
-		visit.accept(root.val);
-		traverseInOrder(root.right, visit);
+		traverseInOrder(root.getLeft(), visit);
+		visit.accept(root.getVal());
+		traverseInOrder(root.getRight(), visit);
 	}
 
 	public List<T> toInorderList() {
