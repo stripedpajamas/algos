@@ -5,12 +5,15 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class BinaryTree<T extends Comparable<T>> {
-	TreeNode<T> treeRoot;
+	public TreeNode<T> treeRoot;
+	private final TreeNodeFactory<T> nodeFactory;
 
-	BinaryTree() {
+	BinaryTree(final TreeNodeFactory<T> nodeFactory) {
+		this.nodeFactory = nodeFactory;
 	}
 
-	BinaryTree(final TreeNode<T> root) {
+	BinaryTree(final TreeNodeFactory<T> nodeFactory, final TreeNode<T> root) {
+		this.nodeFactory = nodeFactory;
 		this.treeRoot = root;
 	}
 
@@ -20,21 +23,21 @@ public class BinaryTree<T extends Comparable<T>> {
 
 	public void insert(final TreeNode<T> root, final T val) {
 		if (this.treeRoot == null) {
-			this.treeRoot = new TreeNode<>(val);
+			this.treeRoot = nodeFactory.fromValue(val);
 			return;
 		}
 
 		if (val.compareTo(root.getVal()) < 0) {
 			// val belongs to the left of root
 			if (root.getLeft() == null) {
-				root.setLeft(new TreeNode<>(val));
+				root.setLeft(nodeFactory.fromValue(val));
 			} else {
 				insert(root.getLeft(), val);
 			}
 		} else if (val.compareTo(root.getVal()) > 0) {
 			// val belongs to the right of root
 			if (root.getRight() == null) {
-				root.setRight(new TreeNode<>(val));
+				root.setRight(nodeFactory.fromValue(val));
 			} else {
 				insert(root.getRight(), val);
 			}

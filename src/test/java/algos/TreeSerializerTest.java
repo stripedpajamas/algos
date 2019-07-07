@@ -10,6 +10,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class TreeSerializerTest {
+	private static final BinaryTreeNodeFactory<Integer> NODE_FACTORY = new BinaryTreeNodeFactory<>();
+	
 	private BinaryTree<Integer> tree;
 	private TreeSerializer<Integer> serializer;
 
@@ -18,10 +20,10 @@ public class TreeSerializerTest {
 
 	@Before
 	public void setup() {
-		tree = new BinaryTree<>();
+		tree = new BinaryTree<>(NODE_FACTORY);
 		tree.insert(Arrays.asList(7, 2, 5, 4, 3, 6, 8, 1));
 
-		serializer = new TreeSerializer<>();
+		serializer = new TreeSerializer<>(NODE_FACTORY);
 	}
 
 	@Test

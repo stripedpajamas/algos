@@ -12,6 +12,11 @@ import com.fasterxml.jackson.databind.type.CollectionType;
 
 public class TreeSerializer<T extends Comparable<T>> {
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private final TreeNodeFactory<T> nodeFactory;
+
+    public TreeSerializer(final TreeNodeFactory<T> nodeFactory) {
+		this.nodeFactory = nodeFactory;
+	}
 
     public String serialize(final BinaryTree<T> tree) throws JsonProcessingException {
         return objectMapper.writeValueAsString(createValuesList(tree));
@@ -49,9 +54,10 @@ public class TreeSerializer<T extends Comparable<T>> {
         while (currentIdx < valuesList.size()) {
             final T currentVal = valuesList.get(currentIdx);
             if (currentParent == null) {
-                if (currentVal == null)
+                if (currentVal == null) {
                     break;
-                currentParent = new TreeNode<>(currentVal);
+                }
+                currentParent = nodeFactory.fromValue(currentVal);
                 finalParent = currentParent;
             } else {
                 currentParent = parentQueue.poll();
@@ -60,7 +66,7 @@ public class TreeSerializer<T extends Comparable<T>> {
             if (++currentIdx < valuesList.size()) {
                 final T leftVal = valuesList.get(currentIdx);
                 if (leftVal != null) {
-                    currentParent.setLeft(new TreeNode<>(leftVal));
+                    currentParent.setLeft(nodeFactory.fromValue(leftVal));
                     parentQueue.add(currentParent.getLeft());
                 }
             }
@@ -68,12 +74,12 @@ public class TreeSerializer<T extends Comparable<T>> {
             if (++currentIdx < valuesList.size()) {
                 final T rightVal = valuesList.get(currentIdx);
                 if (rightVal != null) {
-                    currentParent.setRight(new TreeNode<>(rightVal));
+                    currentParent.setRight(nodeFactory.fromValue(rightVal));
                     parentQueue.add(currentParent.getRight());
                 }
             }
         }
 
-        return new BinaryTree<>(finalParent);
+        return new BinaryTree<>(nodeFactory, finalParent);
     }
 }
