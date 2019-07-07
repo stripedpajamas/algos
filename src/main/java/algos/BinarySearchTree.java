@@ -6,14 +6,10 @@ import java.util.function.Consumer;
 
 public class BinarySearchTree<T extends Comparable<T>> implements BinaryTree<T, BinaryTreeNode<T>> {
 	public BinaryTreeNode<T> treeRoot;
-	private final BinaryTreeNodeFactory<T> nodeFactory;
 
-	BinarySearchTree(final BinaryTreeNodeFactory<T> nodeFactory) {
-		this.nodeFactory = nodeFactory;
-	}
+	BinarySearchTree() {}
 
-	BinarySearchTree(final BinaryTreeNodeFactory<T> nodeFactory, final BinaryTreeNode<T> root) {
-		this.nodeFactory = nodeFactory;
+	BinarySearchTree(final BinaryTreeNode<T> root) {
 		this.treeRoot = root;
 	}
 
@@ -33,21 +29,21 @@ public class BinarySearchTree<T extends Comparable<T>> implements BinaryTree<T, 
 
 	public void insert(final BinaryTreeNode<T> root, final T val) {
 		if (this.treeRoot == null) {
-			this.treeRoot = nodeFactory.fromValue(val);
+			this.treeRoot = new BinaryTreeNode<>(val);
 			return;
 		}
 
 		if (val.compareTo(root.getVal()) < 0) {
 			// val belongs to the left of root
 			if (root.getLeft() == null) {
-				root.setLeft(nodeFactory.fromValue(val));
+				root.setLeft(new BinaryTreeNode<>(val));
 			} else {
 				insert(root.getLeft(), val);
 			}
 		} else if (val.compareTo(root.getVal()) > 0) {
 			// val belongs to the right of root
 			if (root.getRight() == null) {
-				root.setRight(nodeFactory.fromValue(val));
+				root.setRight(new BinaryTreeNode<>(val));
 			} else {
 				insert(root.getRight(), val);
 			}

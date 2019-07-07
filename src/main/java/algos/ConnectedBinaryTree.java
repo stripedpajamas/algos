@@ -2,18 +2,12 @@ package algos;
 
 public class ConnectedBinaryTree<T extends Comparable<T>> implements BinaryTree<T, ConnectedTreeNode<T>> {
   public ConnectedTreeNode<T> treeRoot;
-  private final ConnectedTreeNodeFactory<T> nodeFactory;
-  
-  ConnectedBinaryTree(final ConnectedTreeNodeFactory<T> nodeFactory) {
-    this.nodeFactory = nodeFactory;
-	}
 
   /**
    * Accept an unconnected tree as input
    */
-	ConnectedBinaryTree(final ConnectedTreeNodeFactory<T> nodeFactory, final BinaryTreeNode<T> root) {
-		this.nodeFactory = nodeFactory;
-    connect(root);
+	ConnectedBinaryTree(final BinaryTreeNode<T> root) {
+    this.treeRoot = connect(root);
   }
 
   @Override
@@ -30,19 +24,52 @@ public class ConnectedBinaryTree<T extends Comparable<T>> implements BinaryTree<
    * Connects all the child nodes together
    * as per https://leetcode.com/problems/populating-next-right-pointers-in-each-node/
    */
-  private void connect(final BinaryTreeNode<T> root) {
+  private ConnectedTreeNode<T> connect(final BinaryTreeNode<T> root) {
     if (root == null) {
-      return;
+      return null;
     }
+    final ConnectedTreeNode<T> newRoot = new ConnectedTreeNode<T>(root.getVal());
+    connect(root, newRoot);
 
+    return newRoot;
   }
 
   private void connect(final BinaryTreeNode<T> unconnectedRoot, final ConnectedTreeNode<T> root) {
-    if (root.getLeft() != null) {
-      root.getLeft().setNext(root.getRight());
+    if (unconnectedRoot == null) {
+      return;
     }
-    if (root.getNext() != null && root.getRight() != null) {
-        root.getRight().setNext(root.getNext().getLeft());
+    final ConnectedTreeNode<T> newLeft = unconnectedRoot.getLeft() != null ? new ConnectedTreeNode<T>(unconnectedRoot.getLeft().getVal()) : null;
+    final ConnectedTreeNode<T> newRight = unconnectedRoot.getRight() != null ? new ConnectedTreeNode<T>(unconnectedRoot.getRight().getVal()) : null;
+
+    root.setLeft(newLeft);
+    root.setRight(newRight);
+
+    if (newLeft != null) {
+      newLeft.setNext(newRight);
+    }
+
+    if (root.getNext() != null) {
+      ConnectedTreeNode<T> sibling = root.getNext();
+      while (sibling != null && sibling.getLeft() == null && sibling.getRight() == null) {
+          sibling = sibling.getNext();
+      }
+      if (sibling != null) {
+          final ConnectedTreeNode<T> next;
+          if (sibling.getLeft() == null) {
+            if (sibling.getRight() == null) {
+              next = null;
+            } else {
+              next = sibling.getRight();
+            }
+          } else {
+            next = sibling.getLeft();
+          }
+          if (root.getRight() != null) {
+              root.getRight().setNext(next);
+          } else if (root.getLeft() != null) {
+              root.getLeft().setNext(next);
+          }
+      }
     }
     
     connect(root.getRight());
