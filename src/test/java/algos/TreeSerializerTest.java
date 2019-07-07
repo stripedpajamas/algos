@@ -12,7 +12,7 @@ import org.junit.Test;
 public class TreeSerializerTest {
 	private static final BinaryTreeNodeFactory<Integer> NODE_FACTORY = new BinaryTreeNodeFactory<>();
 	
-	private BinaryTree<Integer> tree;
+	private BinarySearchTree<Integer> tree;
 	private BinaryTreeSerializer<Integer> serializer;
 
 	private final List<Integer> valuesList = Arrays.asList(7, 2, 8, 1, 5, null, null, null, null, 4, 6, 3, null, null,
@@ -20,7 +20,7 @@ public class TreeSerializerTest {
 
 	@Before
 	public void setup() {
-		tree = new BinaryTree<>(NODE_FACTORY);
+		tree = new BinarySearchTree<>(NODE_FACTORY);
 		tree.insert(Arrays.asList(7, 2, 5, 4, 3, 6, 8, 1));
 
 		serializer = new BinaryTreeSerializer<>(NODE_FACTORY);
@@ -35,8 +35,9 @@ public class TreeSerializerTest {
 
 	@Test
 	public void testFromValuesList() {
-		final BinaryTree<Integer> actualTree = serializer.fromValuesList(valuesList);
+		final BinaryTreeNode<Integer> root = serializer.fromValuesList(valuesList);
 
+		final BinarySearchTree<Integer> actualTree = new BinarySearchTree<>(NODE_FACTORY, root);
 		// TODO implement an equality test on the tree
 		// because the below equality does not necessitate equal structure
 		assertEquals(tree.toInorderList(), actualTree.toInorderList());
@@ -44,7 +45,8 @@ public class TreeSerializerTest {
 
 	@Test
 	public void testSerialization() throws IOException {
-		final BinaryTree<Integer> actualTree = serializer.deserialize(serializer.serialize(tree));
+		final BinaryTreeNode<Integer> root = serializer.deserialize(serializer.serialize(tree));
+		final BinarySearchTree<Integer> actualTree = new BinarySearchTree<>(NODE_FACTORY, root);
 
 		// TODO implement an equality test on the tree
 		// because the below equality does not necessitate equal structure

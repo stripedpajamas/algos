@@ -1,6 +1,6 @@
 package algos;
 
-public class BinaryTreeNode<T extends Comparable<T>> implements TreeNode<T, BinaryTreeNode<T>> {
+public class BinaryTreeNode<T extends Comparable<T>> {
   public BinaryTreeNode<T> left;
   public BinaryTreeNode<T> right;
   private T val;

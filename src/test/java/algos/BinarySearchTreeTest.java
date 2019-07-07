@@ -8,12 +8,12 @@ import java.util.List;
 
 import org.junit.Test;
 
-public class BinaryTreeTest {
+public class BinarySearchTreeTest {
 	private static final BinaryTreeNodeFactory<Integer> NODE_FACTORY = new BinaryTreeNodeFactory<>();
 
 	@Test
 	public void testInorderTraversal() {
-		final BinaryTree<Integer> tree = new BinaryTree<>(NODE_FACTORY);
+		final BinarySearchTree<Integer> tree = new BinarySearchTree<>(NODE_FACTORY);
 		tree.insert(Arrays.asList(7, 2, 5, 4, 3, 6, 8, 1));
 
 		final List<Integer> expected = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8);

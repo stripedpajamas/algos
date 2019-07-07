@@ -18,20 +18,20 @@ public class BinaryTreeSerializer<T extends Comparable<T>> {
 		this.nodeFactory = nodeFactory;
 	}
 
-    public String serialize(final BinaryTree<T> tree) throws JsonProcessingException {
+    public String serialize(final BinaryTree<T, BinaryTreeNode<T>> tree) throws JsonProcessingException {
         return objectMapper.writeValueAsString(createValuesList(tree));
     }
 
-    public BinaryTree<T> deserialize(final String string) throws IOException {
+    public BinaryTreeNode<T> deserialize(final String string) throws IOException {
         final CollectionType collectionType = objectMapper.getTypeFactory().constructCollectionType(List.class, Object.class);
         final List<T> valuesList = objectMapper.readValue(string, collectionType);
         return fromValuesList(valuesList);
     }
 
-    public List<T> createValuesList(final BinaryTree<T> tree) {
+    public List<T> createValuesList(final BinaryTree<T, BinaryTreeNode<T>> tree) {
         final List<T> output = new ArrayList<>();
         final Queue<BinaryTreeNode<T>> queue = new LinkedList<>();
-        queue.add(tree.treeRoot);
+        queue.add(tree.getRoot());
         while (!queue.isEmpty()) {
             final BinaryTreeNode<T> current = queue.poll();
             if (current != null) {
@@ -45,7 +45,7 @@ public class BinaryTreeSerializer<T extends Comparable<T>> {
         return output;
     }
 
-    BinaryTree<T> fromValuesList(final List<T> valuesList) {
+    BinaryTreeNode<T> fromValuesList(final List<T> valuesList) {
         final Queue<BinaryTreeNode<T>> parentQueue = new LinkedList<>();
         BinaryTreeNode<T> finalParent = null;
         BinaryTreeNode<T> currentParent = null;
@@ -80,6 +80,6 @@ public class BinaryTreeSerializer<T extends Comparable<T>> {
             }
         }
 
-        return new BinaryTree<>(nodeFactory, finalParent);
+        return finalParent;
     }
 }
