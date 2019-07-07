@@ -1,8 +1,8 @@
 package algos;
 
-public class BinaryTreeNode<T extends Comparable<T>> implements TreeNode<T> {
-  public TreeNode<T> left;
-  public TreeNode<T> right;
+public class BinaryTreeNode<T extends Comparable<T>> implements TreeNode<T, BinaryTreeNode<T>> {
+  public BinaryTreeNode<T> left;
+  public BinaryTreeNode<T> right;
   private T val;
 
   public BinaryTreeNode(final T val) {
@@ -20,28 +20,28 @@ public class BinaryTreeNode<T extends Comparable<T>> implements TreeNode<T> {
   /**
    * @return the left
    */
-  public TreeNode<T> getLeft() {
+  public BinaryTreeNode<T> getLeft() {
     return left;
   }
 
   /**
    * @return the right
    */
-  public TreeNode<T> getRight() {
+  public BinaryTreeNode<T> getRight() {
     return right;
   }
 
   /**
    * @param left the left to set
    */
-  public void setLeft(final TreeNode<T> left) {
+  public void setLeft(final BinaryTreeNode<T> left) {
     this.left = left;
   }
 
   /**
    * @param right the right to set
    */
-  public void setRight(final TreeNode<T> right) {
+  public void setRight(final BinaryTreeNode<T> right) {
     this.right = right;
   }
 }

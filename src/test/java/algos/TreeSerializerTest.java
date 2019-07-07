@@ -13,7 +13,7 @@ public class TreeSerializerTest {
 	private static final BinaryTreeNodeFactory<Integer> NODE_FACTORY = new BinaryTreeNodeFactory<>();
 	
 	private BinaryTree<Integer> tree;
-	private TreeSerializer<Integer> serializer;
+	private BinaryTreeSerializer<Integer> serializer;
 
 	private final List<Integer> valuesList = Arrays.asList(7, 2, 8, 1, 5, null, null, null, null, 4, 6, 3, null, null,
 			null, null, null);
@@ -23,7 +23,7 @@ public class TreeSerializerTest {
 		tree = new BinaryTree<>(NODE_FACTORY);
 		tree.insert(Arrays.asList(7, 2, 5, 4, 3, 6, 8, 1));
 
-		serializer = new TreeSerializer<>(NODE_FACTORY);
+		serializer = new BinaryTreeSerializer<>(NODE_FACTORY);
 	}
 
 	@Test

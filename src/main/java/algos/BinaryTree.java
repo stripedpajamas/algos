@@ -5,14 +5,14 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class BinaryTree<T extends Comparable<T>> {
-	public TreeNode<T> treeRoot;
-	private final TreeNodeFactory<T> nodeFactory;
+	public BinaryTreeNode<T> treeRoot;
+	private final BinaryTreeNodeFactory<T> nodeFactory;
 
-	BinaryTree(final TreeNodeFactory<T> nodeFactory) {
+	BinaryTree(final BinaryTreeNodeFactory<T> nodeFactory) {
 		this.nodeFactory = nodeFactory;
 	}
 
-	BinaryTree(final TreeNodeFactory<T> nodeFactory, final TreeNode<T> root) {
+	BinaryTree(final BinaryTreeNodeFactory<T> nodeFactory, final BinaryTreeNode<T> root) {
 		this.nodeFactory = nodeFactory;
 		this.treeRoot = root;
 	}
@@ -21,7 +21,7 @@ public class BinaryTree<T extends Comparable<T>> {
 		insert(treeRoot, val);
 	}
 
-	public void insert(final TreeNode<T> root, final T val) {
+	public void insert(final BinaryTreeNode<T> root, final T val) {
 		if (this.treeRoot == null) {
 			this.treeRoot = nodeFactory.fromValue(val);
 			return;
@@ -54,7 +54,7 @@ public class BinaryTree<T extends Comparable<T>> {
 		traverseInOrder(treeRoot, visit);
 	}
 
-	public void traverseInOrder(final TreeNode<T> root, final Consumer<T> visit) {
+	public void traverseInOrder(final BinaryTreeNode<T> root, final Consumer<T> visit) {
 		if (root == null) {
 			return;
 		}

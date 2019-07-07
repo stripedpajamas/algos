@@ -1,22 +1,22 @@
 package algos;
 
-public class ConnectedTreeNode<T extends Comparable<T>> implements TreeNode<T> {
+public class ConnectedTreeNode<T extends Comparable<T>> implements TreeNode<T, ConnectedTreeNode<T>> {
   private T val;
-  private TreeNode<T> next;
-  private TreeNode<T> left;
-  private TreeNode<T> right;
+  private ConnectedTreeNode<T> next;
+  private ConnectedTreeNode<T> left;
+  private ConnectedTreeNode<T> right;
 
   ConnectedTreeNode(T val) {
     this.val = val;
   }
 
   @Override
-  public TreeNode<T> getLeft() {
+  public ConnectedTreeNode<T> getLeft() {
     return left;
   }
 
   @Override
-  public TreeNode<T> getRight() {
+  public ConnectedTreeNode<T> getRight() {
     return right;
   }
 
@@ -31,26 +31,26 @@ public class ConnectedTreeNode<T extends Comparable<T>> implements TreeNode<T> {
   }
 
   @Override
-  public void setRight(TreeNode<T> right) {
+  public void setRight(ConnectedTreeNode<T> right) {
     this.right = right;
   }
 
   @Override
-  public void setLeft(TreeNode<T> left) {
+  public void setLeft(ConnectedTreeNode<T> left) {
     this.left = left;
   }
 
   /**
    * @param next the next to set
    */
-  public void setNext(TreeNode<T> next) {
+  public void setNext(ConnectedTreeNode<T> next) {
     this.next = next;
   }
 
   /**
    * @return the next
    */
-  public TreeNode<T> getNext() {
+  public ConnectedTreeNode<T> getNext() {
     return next;
   }
 }
