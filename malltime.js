@@ -4,41 +4,19 @@
  */
 
 function findBusiestTime (log = []) {
-  let busiestTime
-  let highestCount = -Infinity
-
-  let currentTime
-  let currentCount
-  for (let entry of log) {
-    let [timestamp, count, arrived] = entry
-
-    arrived = arrived || arrived - 1
-
-    // first entry
-    if (typeof currentTime === 'undefined') {
-      currentTime = timestamp
-      currentCount = (arrived * count)
-      continue
-    }
-
-    if (timestamp !== currentTime) {
-      // we have just moved to a different timestamp
-      if (currentCount > highestCount) {
-        highestCount = currentCount
-        busiestTime = currentTime
-      }
-      currentTime = timestamp
-      currentCount += (arrived * count)
-    }
-  }
-
-  // check last entry
-  if (currentCount > highestCount) {
-    highestCount = currentCount
-    busiestTime = currentTime
-  }
-
-  return busiestTime
+  return log.reduce((acc, [timestamp, count, arrived]) => {
+    // squash same-time entries
+    let [prevTime, prevCount = 0] = acc[acc.length - 1] || []
+    let nextTime = prevCount + ((arrived || arrived - 1) * count)
+    return prevTime === timestamp
+      ? [...acc.slice(0, -1), [timestamp, nextTime]]
+      : [...acc, [timestamp, nextTime]]
+  }, []).reduce(([busiestTime, busiestCount], [currentTime, currentCount]) => {
+    // get max count
+    return currentCount > busiestCount
+      ? [currentTime, currentCount]
+      : [busiestTime, busiestCount]
+  }).shift() // return only the timestamp
 }
 
 
