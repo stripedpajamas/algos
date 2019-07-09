@@ -4,19 +4,52 @@
  */
 
 function findBusiestTime (log = []) {
-  return log.reduce((acc, [timestamp, count, arrived]) => {
-    // squash same-time entries
-    let [prevTime, prevCount = 0] = acc[acc.length - 1] || []
-    let nextTime = prevCount + ((arrived || arrived - 1) * count)
-    return prevTime === timestamp
-      ? [...acc.slice(0, -1), [timestamp, nextTime]]
-      : [...acc, [timestamp, nextTime]]
-  }, []).reduce(([busiestTime, busiestCount], [currentTime, currentCount]) => {
-    // get max count
-    return currentCount > busiestCount
-      ? [currentTime, currentCount]
-      : [busiestTime, busiestCount]
-  }).shift() // return only the timestamp
+  return maxBy(
+    mapSquash(
+      log,
+      (prev, el) => prev ? prev[0] === el[0] : false,
+      (prev, el) => [el[0], (prev || [0, 0, 0])[1] + ((el[2] || el[2] - 1) * el[1])]
+    ),
+    (max, curr) => curr[1] > max[1]
+  )[0]
+}
+
+
+/*
+* If the predicate (prev, el) returns true, overwrite the latest
+* entry in the output array with the result of map function; otherwise, add
+* a new entry to the output array with the result of the map function
+*/
+function mapSquash (arr = [], predicate = () => {}, map = () => {}) {
+  if (arr.length < 1) return []
+  let out = [map(null, arr[0])]
+  let outIdx = 0
+
+  for (let i = 1; i < arr.length; i++) {
+    let el = arr[i]
+    let prev = out[outIdx]
+    let next = map(prev, el)
+    if (predicate(prev, el)) {
+      out[outIdx] = next
+    } else {
+      out.push(next)
+      outIdx++
+    }
+  }
+
+  return out
+}
+
+/*
+* f(max, curr) is a function that returns true if curr > max
+*/
+function maxBy (arr = [], f = () => {}) {
+  if (arr.length < 1) return []
+  let max = arr[0]
+  for (let i = 1; i < arr.length; i++) {
+    if (f(max, arr[i])) max = arr[i]
+  }
+  return max
 }
 
 
