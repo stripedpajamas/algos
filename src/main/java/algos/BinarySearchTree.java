@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class BinarySearchTree<T extends Comparable<T>> implements BinaryTree<T, BinaryTreeNode<T>> {
-	public BinaryTreeNode<T> treeRoot;
+	private BinaryTreeNode<T> treeRoot;
 
 	BinarySearchTree() {}
 
@@ -23,6 +23,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements BinaryTree<T, 
 		return treeRoot;
 	}
 
+	@Override
 	public void insert(final T val) {
 		insert(treeRoot, val);
 	}
