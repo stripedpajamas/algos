@@ -6,12 +6,23 @@
 function findBusiestTime (log = []) {
   return maxBy(
     mapSquash(
-      log,
-      (prev, el) => prev ? prev[0] === el[0] : false,
-      (prev, el) => [el[0], (prev || [0, 0, 0])[1] + ((el[2] || el[2] - 1) * el[1])]
+      objectify(log, ['time', 'count', 'arrived']),
+      (prev = {}, el) => prev.time === el.time,
+      ({ count: prevCount } = { count: 0 }, { time, count, arrived }) => ({
+        time, count: prevCount + ((arrived || arrived - 1) * count)
+      })
     ),
-    (max, curr) => curr[1] > max[1]
-  )[0]
+    (max, curr) => curr.count > max.count
+  ).time
+}
+
+function objectify (arr, labels) {
+  if (!arr.length) return
+  return arr.map(entry => entry.reduce((acc, val, idx) => {
+    const label = labels[idx] || idx
+    acc[label] = val
+    return acc
+  }, {}))
 }
 
 
@@ -22,7 +33,7 @@ function findBusiestTime (log = []) {
 */
 function mapSquash (arr = [], predicate = () => {}, map = () => {}) {
   if (arr.length < 1) return []
-  let out = [map(null, arr[0])]
+  let out = [map(undefined, arr[0])]
   let outIdx = 0
 
   for (let i = 1; i < arr.length; i++) {
@@ -44,7 +55,7 @@ function mapSquash (arr = [], predicate = () => {}, map = () => {}) {
 * f(max, curr) is a function that returns true if curr > max
 */
 function maxBy (arr = [], f = () => {}) {
-  if (arr.length < 1) return []
+  if (!arr.length) return []
   let max = arr[0]
   for (let i = 1; i < arr.length; i++) {
     if (f(max, arr[i])) max = arr[i]
