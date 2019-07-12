@@ -1,7 +1,5 @@
 package algos;
 
-public class BinaryTreeNodeFactory<T extends Comparable<T>> {
-  public BinaryTreeNode<T> fromValue(final T val) {
-    return new BinaryTreeNode<>(val);
-  }
+public interface BinaryTreeNodeFactory<T extends Comparable<T>, Node extends AbstractBinaryTreeNode<T, Node>> {
+  public Node fromValue(final T val);
 }

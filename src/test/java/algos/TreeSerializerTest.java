@@ -10,10 +10,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class TreeSerializerTest {
-	private static final BinaryTreeNodeFactory<Integer> NODE_FACTORY = new BinaryTreeNodeFactory<>();
+	private static final BinaryTreeNodeFactory<Integer, BinaryTreeNode<Integer>> NODE_FACTORY = new BinaryTreeNodeFactoryImpl<>();
 	
 	private BinarySearchTree<Integer> tree;
-	private BinaryTreeSerializer<Integer> serializer;
+	private BinaryTreeSerializer<Integer, BinaryTreeNode<Integer>> serializer;
 
 	private final List<Integer> valuesList = Arrays.asList(7, 2, 8, 1, 5, null, null, null, null, 4, 6, 3, null, null,
 			null, null, null);

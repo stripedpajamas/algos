@@ -1,42 +1,22 @@
 package algos;
 
-import java.util.List;
-
-public class ConnectedBinaryTree<T extends Comparable<T>> implements BinaryTree<T, ConnectedTreeNode<T>> {
-  private ConnectedTreeNode<T> treeRoot;
-
+public class ConnectedBinaryTree<T extends Comparable<T>> extends BinaryTree<T, ConnectedTreeNode<T>> {
   ConnectedBinaryTree() {}
 
   /**
    * Accept an unconnected tree as input
    */
 	ConnectedBinaryTree(final BinaryTreeNode<T> root) {
-    this.treeRoot = connect(root);
-  }
-
-  @Override
-  public void setRoot(ConnectedTreeNode<T> root) {
-    this.treeRoot = root;
-  }
-
-  @Override
-  public ConnectedTreeNode<T> getRoot() {
-    return treeRoot;
+    setRoot(connect(root));
   }
 
   @Override
   public void insert(final T val) {
-    if (treeRoot == null) {
-      treeRoot = new ConnectedTreeNode<>(val);
+    if (getRoot() == null) {
+      setRoot(new ConnectedTreeNode<>(val));
       return;
     }
-    insert(treeRoot, val);
-  }
-
-  public void insert(final List<T> vals) {
-    for (T val : vals) {
-      insert(val);
-    }
+    insert(getRoot(), val);
   }
 
   private void insert(final ConnectedTreeNode<T> root, final T val) {
@@ -95,8 +75,8 @@ public class ConnectedBinaryTree<T extends Comparable<T>> implements BinaryTree<
 
     connectToSiblingChild(root, findNearestSiblingWithChild(root));
     
-    connect(root.getRight());
-    connect(root.getLeft());
+    connect(unconnectedRoot.getRight(), root.getRight());
+    connect(unconnectedRoot.getLeft(), root.getLeft());
   }
 
   private ConnectedTreeNode<T> findNearestSiblingWithChild(final ConnectedTreeNode<T> root) {

@@ -4,33 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class BinarySearchTree<T extends Comparable<T>> implements BinaryTree<T, BinaryTreeNode<T>> {
-	private BinaryTreeNode<T> treeRoot;
-
+public class BinarySearchTree<T extends Comparable<T>> extends BinaryTree<T, BinaryTreeNode<T>> {
 	BinarySearchTree() {}
 
 	BinarySearchTree(final BinaryTreeNode<T> root) {
-		this.treeRoot = root;
-	}
-
-	@Override
-	public void setRoot(final BinaryTreeNode<T> root) {
-		this.treeRoot = root;
-	}
-
-	@Override
-	public BinaryTreeNode<T> getRoot() {
-		return treeRoot;
+		setRoot(root);
 	}
 
 	@Override
 	public void insert(final T val) {
-		insert(treeRoot, val);
+		insert(getRoot(), val);
 	}
 
 	public void insert(final BinaryTreeNode<T> root, final T val) {
-		if (this.treeRoot == null) {
-			this.treeRoot = new BinaryTreeNode<>(val);
+		if (getRoot() == null) {
+			setRoot(new BinaryTreeNode<>(val));
 			return;
 		}
 
@@ -51,14 +39,8 @@ public class BinarySearchTree<T extends Comparable<T>> implements BinaryTree<T, 
 		}
 	}
 
-	public void insert(final List<T> vals) {
-		for (final T val : vals) {
-			insert(val);
-		}
-	}
-
 	public void traverseInOrder(final Consumer<T> visit) {
-		traverseInOrder(treeRoot, visit);
+		traverseInOrder(getRoot(), visit);
 	}
 
 	public void traverseInOrder(final BinaryTreeNode<T> root, final Consumer<T> visit) {

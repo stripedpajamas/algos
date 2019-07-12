@@ -10,30 +10,30 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 
-public class BinaryTreeSerializer<T extends Comparable<T>> {
+public class BinaryTreeSerializer<T extends Comparable<T>, Node extends AbstractBinaryTreeNode<T, Node>> {
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private final BinaryTreeNodeFactory<T> nodeFactory;
+    private final BinaryTreeNodeFactory<T, Node> nodeFactory;
 
-    public BinaryTreeSerializer(final BinaryTreeNodeFactory<T> nodeFactory) {
+    public BinaryTreeSerializer(final BinaryTreeNodeFactory<T, Node> nodeFactory) {
 		this.nodeFactory = nodeFactory;
 	}
 
-    public String serialize(final BinaryTree<T, BinaryTreeNode<T>> tree) throws JsonProcessingException {
+    public String serialize(final BinaryTree<T, Node> tree) throws JsonProcessingException {
         return objectMapper.writeValueAsString(createValuesList(tree));
     }
 
-    public BinaryTreeNode<T> deserialize(final String string) throws IOException {
+    public Node deserialize(final String string) throws IOException {
         final CollectionType collectionType = objectMapper.getTypeFactory().constructCollectionType(List.class, Object.class);
         final List<T> valuesList = objectMapper.readValue(string, collectionType);
         return fromValuesList(valuesList);
     }
 
-    public List<T> createValuesList(final BinaryTree<T, BinaryTreeNode<T>> tree) {
+    public List<T> createValuesList(final BinaryTree<T, Node> tree) {
         final List<T> output = new ArrayList<>();
-        final Queue<BinaryTreeNode<T>> queue = new LinkedList<>();
+        final Queue<Node> queue = new LinkedList<>();
         queue.add(tree.getRoot());
         while (!queue.isEmpty()) {
-            final BinaryTreeNode<T> current = queue.poll();
+            final Node current = queue.poll();
             if (current != null) {
                 output.add(current.getVal());
                 queue.add(current.getLeft());
@@ -45,10 +45,10 @@ public class BinaryTreeSerializer<T extends Comparable<T>> {
         return output;
     }
 
-    BinaryTreeNode<T> fromValuesList(final List<T> valuesList) {
-        final Queue<BinaryTreeNode<T>> parentQueue = new LinkedList<>();
-        BinaryTreeNode<T> finalParent = null;
-        BinaryTreeNode<T> currentParent = null;
+    Node fromValuesList(final List<T> valuesList) {
+        final Queue<Node> parentQueue = new LinkedList<>();
+        Node finalParent = null;
+        Node currentParent = null;
         int currentIdx = 0;
 
         while (currentIdx < valuesList.size()) {
